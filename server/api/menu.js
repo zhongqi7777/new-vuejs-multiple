@@ -34,7 +34,7 @@ export default [
   {
     url: '/menu',
     type: 'get',
-    response: _ => {
+    response: () => {
       return {
         code: 20000,
         data: menulist

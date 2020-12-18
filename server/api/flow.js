@@ -674,7 +674,7 @@ export default [
     {
         url: '/steplist',
         type: 'get',
-        response: _ => {
+        response: () => {
             return {
                 code: 20000,
                 data: steplist
@@ -685,7 +685,7 @@ export default [
     {
         url: '/flowlist',
         type: 'get',
-        response: _ => {
+        response: () => {
             return {
                 code: 20000,
                 data: flowlist
