@@ -17,8 +17,12 @@ glob.sync("./src/pages/**/app.js").forEach((path) => {
   };
 });
 
-const port = process.env.port || process.env.npm_config_port || 9527 // dev port
+const port = process.env.port || process.env.npm_config_port || 9527; // dev port
 module.exports = {
+  //publicPath: '/',
+  publicPath: "./",
+  // outputDir: 'dist',
+  outputDir: "docs",
   pages,
   chainWebpack: (config) => config.plugins.delete("named-chunks"),
   devServer: {
