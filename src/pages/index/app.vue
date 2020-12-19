@@ -42,12 +42,11 @@ export default {
     };
   },
   methods: {
-    async gogogo() {
+    gogogo() {
       //location.assign("../customer/home.html");
 
-      let result = await getMenu();
+     getMenu();
 
-      console.log("data", result);
     },
     tototo() {
       //location.assign("../user/login.html");
