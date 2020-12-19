@@ -23,7 +23,7 @@
         </li>
       </ul>
       <el-button type="primary" @click="gogogo"
-        >To Customer Home Page 2021</el-button
+        >To Customer Home Page</el-button
       >
       <el-button type="primary" plain @click="tototo"
         >To User Login Page</el-button
