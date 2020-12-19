@@ -23,7 +23,7 @@
         </li>
       </ul>
       <el-button type="primary" @click="gogogo"
-        >To Customer Home Page</el-button
+        >To Customer Home Page new</el-button
       >
       <el-button type="primary" plain @click="tototo"
         >To User Login Page</el-button
@@ -45,8 +45,9 @@ export default {
     gogogo() {
       //location.assign("../customer/home.html");
 
-     getMenu();
-
+      getMenu().then((res) => {
+        console.log("res", res);
+      });
     },
     tototo() {
       //location.assign("../user/login.html");

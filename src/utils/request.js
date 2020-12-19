@@ -1,16 +1,16 @@
 import axios from "axios";
 import { MessageBox, Message } from "element-ui";
-import { getBaseURL } from "@/utils/util";
+// import { getBaseURL } from "@/utils/util";
 
-let baseURL = process.env.VUE_APP_BASE_API
-  ? process.env.VUE_APP_BASE_API
-  : getBaseURL();
-let baseENV = process.env.VUE_APP_API_ROOT ? process.env.VUE_APP_API_ROOT : "";
-baseURL += baseENV;
+// let baseURL = process.env.VUE_APP_BASE_API
+//   ? process.env.VUE_APP_BASE_API
+//   : getBaseURL();
+// let baseENV = process.env.VUE_APP_API_ROOT ? process.env.VUE_APP_API_ROOT : "";
+// baseURL += baseENV;
 
 // create an axios instance
 const service = axios.create({
-  baseURL: baseURL, // url = base url + request url
+  baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
   // withCredentials: true, // send cookies when cross-domain requests
   timeout: 5000, // request timeout
 });

@@ -1,11 +1,26 @@
 import Mock from 'mockjs'
+import { param2Obj } from '../src/utils/index'
 
-import menu from "./api/menu";
-import flow from "./api/flow";
+// import user from './user'
+// import role from './role'
+// import article from './article'
+// import search from './remote-search'
+
+// const mocks = [
+//   ...user,
+//   ...role,
+//   ...article,
+//   ...search
+// ]
+
+// const menu = require("./api/menu")
+// const flow = require("./api/flow")
+
+import menu from './api/menu'
+
 
 const mocks = [
-  ...menu,
-  ...flow
+  ...menu
 ]
 
 // for front mock
@@ -15,7 +30,7 @@ export function mockXHR() {
   // mock patch
   // https://github.com/nuysoft/Mock/issues/300
   Mock.XHR.prototype.proxy_send = Mock.XHR.prototype.send
-  Mock.XHR.prototype.send = function () {
+  Mock.XHR.prototype.send = function() {
     if (this.custom.xhr) {
       this.custom.xhr.withCredentials = this.withCredentials || false
 
@@ -27,14 +42,15 @@ export function mockXHR() {
   }
 
   function XHR2ExpressReqWrap(respond) {
-    return function (options) {
+    return function(options) {
       let result = null
       if (respond instanceof Function) {
-        const { body, type } = options
+        const { body, type, url } = options
         // https://expressjs.com/en/4x/api.html#req
         result = respond({
           method: type,
-          body: JSON.parse(body)
+          body: JSON.parse(body),
+          query: param2Obj(url)
         })
       } else {
         result = respond
@@ -48,4 +64,18 @@ export function mockXHR() {
   }
 }
 
-export default mocks
+// for mock server
+const responseFake = (url, type, respond) => {
+  return {
+    url: new RegExp(`${process.env.VUE_APP_BASE_API}${url}`),
+    type: type || 'get',
+    response(req, res) {
+      console.log('request invoke:' + req.path)
+      res.json(Mock.mock(respond instanceof Function ? respond(req, res) : respond))
+    }
+  }
+}
+
+export default mocks.map(route => {
+  return responseFake(route.url, route.type, route.response)
+})
