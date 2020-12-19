@@ -42,18 +42,22 @@ export default {
     };
   },
   methods: {
-    gogogo() {
-      location.assign("../customer/home.html");
+    async gogogo() {
+      //location.assign("../customer/home.html");
+
+      let result = await getMenu();
+
+      console.log("data", result);
     },
     tototo() {
-      location.assign("../user/login.html");
+      //location.assign("../user/login.html");
     },
   },
-  async mounted() {
-    let { data } = await getMenu();
+  // async mounted() {
+  //   let { data } = await getMenu();
 
-    console.log("data", data);
-  },
+  //   console.log("data", data);
+  // },
 };
 </script>
 
