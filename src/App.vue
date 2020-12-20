@@ -1,25 +1,28 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <span type="primary" @click="fetchData"
+      >To Customer Home Page 2021</span>
   </div>
 </template>
 
 <script>
 import { getMenu } from "./api/home";
-import HelloWorld from './components/HelloWorld.vue'
 
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
+  name: "App",
+  methods: {
+    fetchData() {
+      getMenu().then((res) => {
+        console.log("getMenu.then(res=>{", res);
+      });
+    },
   },
-  mounted(){
-    getMenu().then(res=>{
-      console.log('getMenu.then(res=>{',res)
-    })
-  }
-}
+  mounted() {
+    // getMenu().then((res) => {
+    //   console.log("getMenu.then(res=>{", res);
+    // });
+  },
+};
 </script>
 
 <style>
