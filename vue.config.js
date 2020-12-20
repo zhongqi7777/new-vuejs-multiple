@@ -23,6 +23,7 @@ module.exports = {
   publicPath: "./",
   // outputDir: 'dist',
   outputDir: "docs",
+  assetsDir: 'static',
   chainWebpack: (config) => config.plugins.delete("named-chunks"),
   devServer: {
     port: port,
