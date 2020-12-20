@@ -1,18 +1,22 @@
-var chokidar = require('chokidar')
-var bodyParser = require('body-parser')
-var chalk = require('chalk')
-var path = require('path')
+const chokidar = require('chokidar')
+const bodyParser = require('body-parser')
+const chalk = require('chalk')
+const path = require('path')
+const Mock = require('mockjs')
 
-var mockDir = path.join(process.cwd(), 'mock')
+const mockDir = path.join(process.cwd(), 'mock')
 
 function registerRoutes(app) {
   let mockLastIndex
-  var { mocks } = require('./index.js')
-  for (var mock of mocks) {
+  const { mocks } = require('./index.js')
+  const mocksForServer = mocks.map(route => {
+    return responseFake(route.url, route.type, route.response)
+  })
+  for (const mock of mocksForServer) {
     app[mock.type](mock.url, mock.response)
     mockLastIndex = app._router.stack.length
   }
-  var mockRoutesLength = Object.keys(mocks).length
+  const mockRoutesLength = Object.keys(mocksForServer).length
   return {
     mockRoutesLength: mockRoutesLength,
     mockStartIndex: mockLastIndex - mockRoutesLength
@@ -27,8 +31,19 @@ function unregisterRoutes() {
   })
 }
 
-module.exports = app => {
+// for mock server
+const responseFake = (url, type, respond) => {
+  return {
+    url: new RegExp(`${process.env.VUE_APP_BASE_API}${url}`),
+    type: type || 'get',
+    response(req, res) {
+      console.log('request invoke:' + req.path)
+      res.json(Mock.mock(respond instanceof Function ? respond(req, res) : respond))
+    }
+  }
+}
 
+module.exports = app => {
   // parse app.body
   // https://expressjs.com/en/4x/api.html#req.body
   app.use(bodyParser.json())
@@ -36,7 +51,7 @@ module.exports = app => {
     extended: true
   }))
 
-  var mockRoutes = registerRoutes(app)
+  const mockRoutes = registerRoutes(app)
   var mockRoutesLength = mockRoutes.mockRoutesLength
   var mockStartIndex = mockRoutes.mockStartIndex
 
@@ -53,7 +68,7 @@ module.exports = app => {
         // clear routes cache
         unregisterRoutes()
 
-        var mockRoutes = registerRoutes(app)
+        const mockRoutes = registerRoutes(app)
         mockRoutesLength = mockRoutes.mockRoutesLength
         mockStartIndex = mockRoutes.mockStartIndex
 

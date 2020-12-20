@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <span type="primary" @click="fetchData"
-      >To Customer Home Page 2021</span>
+      >To Customer Home Page</span>
   </div>
 </template>
 
