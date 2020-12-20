@@ -6,12 +6,18 @@
 </template>
 
 <script>
+import { getMenu } from "./api/home";
 import HelloWorld from './components/HelloWorld.vue'
 
 export default {
   name: 'App',
   components: {
     HelloWorld
+  },
+  mounted(){
+    getMenu().then(res=>{
+      console.log('getMenu.then(res=>{',res)
+    })
   }
 }
 </script>
